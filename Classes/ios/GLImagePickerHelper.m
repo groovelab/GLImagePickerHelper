@@ -8,6 +8,9 @@
 
 #import "GLImagePickerHelper.h"
 
+#import "UIView+GLImagePickerHelper.h"
+#import "UIImage+GLImagePickerHelper.h"
+
 @interface GLImagePickerHelper ()
 
 @property (nonatomic) UIViewController *cameraViewController;
@@ -90,7 +93,6 @@
     NSString *className = NSStringFromClass([viewController class]);
     if ([className isEqualToString:@"PLUICameraViewController"]) {
         cropView = [viewController.view subviewWithClassName:@"PLCropOverlayCropView"];
-        
     } else if ([className isEqualToString:@"PUUIImageViewController"] ||
                [className isEqualToString:@"PLUIImageViewController"]) {
         cropView = [viewController.view subviewWithClassName:@"PLCropOverlayCropView"];
@@ -139,90 +141,6 @@
 - (void)_didUIImagePickerControllerUserDidRejectItem:(NSNotification *)notification
 {
     [self.fillLayer removeFromSuperlayer];
-}
-
-@end
-
-@implementation UIView (layer)
-
-- (CAShapeLayer *)addCircleHoleLayer
-{
-    return [self addCircleHoleLayerWithRadius:CGRectGetWidth(self.frame) / 2. - 1.];
-}
-
-- (CAShapeLayer *)addCircleHoleLayerWithRadius:(CGFloat)radius
-{
-    return [self addCircleHoleLayerWithRadius:radius topMargin:0.];
-}
-
-- (CAShapeLayer *)addCircleHoleLayerWithRadius:(CGFloat)radius topMargin:(CGFloat)topMargin
-{
-    UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.frame cornerRadius:0.];
-    UIBezierPath *circlePath = [UIBezierPath bezierPathWithRoundedRect:(CGRect){
-        .origin.x = CGRectGetWidth(self.frame) / 2. - radius,
-        .origin.y = CGRectGetHeight(self.frame) / 2. - radius + topMargin,
-        .size.width = radius * 2.,
-        .size.height = radius * 2.
-    } cornerRadius:radius];
-    [path appendPath:circlePath];
-    [path setUsesEvenOddFillRule:YES];
-    
-    CAShapeLayer *fillLayer = [CAShapeLayer layer];
-    fillLayer.path = path.CGPath;
-    fillLayer.fillRule = kCAFillRuleEvenOdd;
-    fillLayer.fillColor = [UIColor blackColor].CGColor;
-    fillLayer.opacity = 0.6;
-    [self.layer addSublayer:fillLayer];
-    return fillLayer;
-}
-
-@end
-
-@implementation UIView (subview)
-
-- (UIView *)subviewAtIndex:(NSInteger)index
-{
-    if (self.subviews.count <= index) {
-        return nil;
-    }
-    return self.subviews[index];
-}
-
-- (UIView *)subviewWithClassName:(NSString *)targetClassName
-{
-    for (UIView *subview in self.subviews) {
-        if ([NSStringFromClass([subview class]) isEqualToString:targetClassName]) {
-            return subview;
-        }
-        
-        UIView *targetSubview = [subview subviewWithClassName:targetClassName];
-        if (targetSubview) {
-            return targetSubview;
-        }
-    }
-    return nil;
-}
-
-@end
-
-@implementation UIImage (transform)
-
-- (UIImage *)makeCornerRound:(CGFloat)cornerRadius
-{
-    CALayer *imageLayer = [CALayer layer];
-    imageLayer.frame = (CGRect){
-        .origin = CGPointZero,
-        .size = self.size,
-    };
-    imageLayer.contents = (id)self.CGImage;
-    imageLayer.masksToBounds = YES;
-    imageLayer.cornerRadius = cornerRadius;
-    
-    UIGraphicsBeginImageContext(imageLayer.frame.size);
-    [imageLayer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *roundedImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return roundedImage;
 }
 
 @end

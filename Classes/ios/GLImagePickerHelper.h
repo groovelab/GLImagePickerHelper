@@ -18,24 +18,3 @@
 - (void)willShowViewController:(UIViewController *)viewController;
 
 @end
-
-@interface UIView (layer)
-
-- (CAShapeLayer *)addCircleHoleLayer;
-- (CAShapeLayer *)addCircleHoleLayerWithRadius:(CGFloat)radius;
-- (CAShapeLayer *)addCircleHoleLayerWithRadius:(CGFloat)radius topMargin:(CGFloat)topMargin;
-
-@end
-
-@interface UIView (subview)
-
-- (UIView *)subviewAtIndex:(NSInteger)index;
-- (UIView *)subviewWithClassName:(NSString *)targetClassName;
-
-@end
-
-@interface UIImage (transform)
-
-- (UIImage *)makeCornerRound:(CGFloat)cornerRadius;
-
-@end

@@ -42,6 +42,18 @@
 
 - (IBAction)_didTouchButton:(id)sender
 {
+    self.helper.holeCropping = NO;
+    [self _showActionSheet];
+}
+
+- (IBAction)_didTouchButton2:(id)sender
+{
+    self.helper.holeCropping = YES;
+    [self _showActionSheet];
+}
+
+- (void)_showActionSheet
+{
     if (NSClassFromString(@"UIAlertController")){
         [self showAlertControllerActionSheet];
         return;

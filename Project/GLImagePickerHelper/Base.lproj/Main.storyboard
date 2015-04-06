@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="14C1514" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="vXZ-lx-hvc">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -44,9 +45,19 @@
                                     </mask>
                                 </variation>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bWx-dk-OaM">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <state key="normal" title="open ImagePicker (with hole cropping)">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="_didTouchButton2:" destination="vXZ-lx-hvc" eventType="touchUpInside" id="9gF-so-m8A"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="bWx-dk-OaM" firstAttribute="top" secondItem="buH-8l-3nG" secondAttribute="bottom" constant="10" id="1h8-wd-fG5"/>
                             <constraint firstItem="buH-8l-3nG" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="10" id="6pG-Fi-3wu"/>
                             <constraint firstItem="mAS-zo-ron" firstAttribute="trailing" secondItem="kh9-bI-dsS" secondAttribute="trailingMargin" id="Gaf-Qv-UHI">
                                 <variation key="widthClass=compact" constant="-10"/>
@@ -55,20 +66,26 @@
                             <constraint firstItem="mAS-zo-ron" firstAttribute="top" secondItem="buH-8l-3nG" secondAttribute="bottom" constant="13" id="ZO8-TQ-wUs">
                                 <variation key="widthClass=compact" constant="20"/>
                             </constraint>
+                            <constraint firstItem="mAS-zo-ron" firstAttribute="top" secondItem="bWx-dk-OaM" secondAttribute="bottom" constant="20" id="k5H-V8-YML"/>
                             <constraint firstItem="buH-8l-3nG" firstAttribute="top" secondItem="jyV-Pf-zRb" secondAttribute="bottom" id="ptP-uE-sWs"/>
+                            <constraint firstItem="bWx-dk-OaM" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="10" id="seK-dk-Ebf"/>
                             <constraint firstItem="mAS-zo-ron" firstAttribute="leading" secondItem="kh9-bI-dsS" secondAttribute="leadingMargin" constant="10" id="xWK-kN-Alt"/>
                         </constraints>
                         <variation key="default">
                             <mask key="subviews">
                                 <exclude reference="buH-8l-3nG"/>
                                 <exclude reference="mAS-zo-ron"/>
+                                <exclude reference="bWx-dk-OaM"/>
                             </mask>
                             <mask key="constraints">
                                 <exclude reference="6pG-Fi-3wu"/>
                                 <exclude reference="ptP-uE-sWs"/>
+                                <exclude reference="1h8-wd-fG5"/>
+                                <exclude reference="seK-dk-Ebf"/>
                                 <exclude reference="Gaf-Qv-UHI"/>
                                 <exclude reference="K8g-P2-dtV"/>
                                 <exclude reference="ZO8-TQ-wUs"/>
+                                <exclude reference="k5H-V8-YML"/>
                                 <exclude reference="xWK-kN-Alt"/>
                             </mask>
                         </variation>
@@ -76,13 +93,17 @@
                             <mask key="subviews">
                                 <include reference="buH-8l-3nG"/>
                                 <include reference="mAS-zo-ron"/>
+                                <include reference="bWx-dk-OaM"/>
                             </mask>
                             <mask key="constraints">
                                 <include reference="6pG-Fi-3wu"/>
                                 <include reference="ptP-uE-sWs"/>
+                                <include reference="1h8-wd-fG5"/>
+                                <include reference="seK-dk-Ebf"/>
                                 <exclude reference="Gaf-Qv-UHI"/>
                                 <include reference="K8g-P2-dtV"/>
-                                <include reference="ZO8-TQ-wUs"/>
+                                <exclude reference="ZO8-TQ-wUs"/>
+                                <include reference="k5H-V8-YML"/>
                                 <include reference="xWK-kN-Alt"/>
                             </mask>
                         </variation>
