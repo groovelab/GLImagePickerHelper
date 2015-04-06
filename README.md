@@ -2,11 +2,18 @@ GLImagePickerHelper
 ==================
 
 GLImagePickerHelper is helper of UIImagePickerController.
+
 If allowsEditing property of UIImagePickerController is YES, zoom scale of crop view is not correct with landscape image.
+
+![not correct zoom scale](https://raw.github.com/groovelab/GLImagePickerHelper/master/SampleImages/not_correct_zoom.png)
 
 GLImagePickerHelper helps to correct zoom scale of crop view.
 
+![correct zoom scale](https://raw.github.com/groovelab/GLImagePickerHelper/master/SampleImages/correct_zoom.png)
+
 Furthermore GLImagePickerHelper can clip out the image in a circle.
+
+![correct zoom scale](https://raw.github.com/groovelab/GLImagePickerHelper/master/SampleImages/hole_crop.png)
 
 Installation
 ----------
