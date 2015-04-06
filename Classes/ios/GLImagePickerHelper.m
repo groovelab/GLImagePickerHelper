@@ -81,7 +81,7 @@ static const CGFloat kScrollViewTopMarginGap = 36.;
         UIImage *image = info[UIImagePickerControllerEditedImage];
         if (image) {
             NSMutableDictionary *mutableInfo = info.mutableCopy;
-            mutableInfo[UIImagePickerControllerEditedImage] = [image makeCornerRound:image.size.width / 2.];
+            mutableInfo[UIImagePickerControllerEditedImage] = [image makeCircle];
             info = mutableInfo;
         }
     }

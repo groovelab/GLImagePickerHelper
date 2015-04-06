@@ -10,6 +10,11 @@
 
 @implementation UIImage (GLImagePickerHelper)
 
+- (UIImage *)makeCircle
+{
+    return [self makeCornerRound:(self.size.width / 2.)];
+}
+
 - (UIImage *)makeCornerRound:(CGFloat)cornerRadius
 {
     CALayer *imageLayer = [CALayer layer];

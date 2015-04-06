@@ -10,6 +10,7 @@
 
 @interface UIImage (GLImagePickerHelper)
 
+- (UIImage *)makeCircle;
 - (UIImage *)makeCornerRound:(CGFloat)cornerRadius;
 
 @end
