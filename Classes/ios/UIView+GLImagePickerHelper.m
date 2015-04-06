@@ -17,10 +17,10 @@
 
 - (CAShapeLayer *)addCircleHoleLayerWithRadius:(CGFloat)radius
 {
-    return [self addCircleHoleLayerWithRadius:radius topMargin:0.];
+    return [self addCircleHoleLayerWithRadius:radius alpha:0.6 topMargin:0.];
 }
 
-- (CAShapeLayer *)addCircleHoleLayerWithRadius:(CGFloat)radius topMargin:(CGFloat)topMargin
+- (CAShapeLayer *)addCircleHoleLayerWithRadius:(CGFloat)radius alpha:(CGFloat)alpha topMargin:(CGFloat)topMargin
 {
     UIBezierPath *path = [UIBezierPath bezierPathWithRoundedRect:self.frame cornerRadius:0.];
     UIBezierPath *circlePath = [UIBezierPath bezierPathWithRoundedRect:(CGRect){
@@ -36,7 +36,7 @@
     fillLayer.path = path.CGPath;
     fillLayer.fillRule = kCAFillRuleEvenOdd;
     fillLayer.fillColor = [UIColor blackColor].CGColor;
-    fillLayer.opacity = 0.6;
+    fillLayer.opacity = alpha;
     [self.layer addSublayer:fillLayer];
     return fillLayer;
 }

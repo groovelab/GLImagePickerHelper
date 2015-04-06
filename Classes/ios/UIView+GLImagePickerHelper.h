@@ -12,7 +12,7 @@
 
 - (CAShapeLayer *)addCircleHoleLayer;
 - (CAShapeLayer *)addCircleHoleLayerWithRadius:(CGFloat)radius;
-- (CAShapeLayer *)addCircleHoleLayerWithRadius:(CGFloat)radius topMargin:(CGFloat)topMargin;
+- (CAShapeLayer *)addCircleHoleLayerWithRadius:(CGFloat)radius alpha:(CGFloat)alpha topMargin:(CGFloat)topMargin;
 
 - (UIView *)subviewAtIndex:(NSInteger)index;
 - (UIView *)subviewWithClassName:(NSString *)targetClassName;
