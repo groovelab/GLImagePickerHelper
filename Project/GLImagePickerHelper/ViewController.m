@@ -25,19 +25,7 @@
     [super viewDidLoad];
 
     self.helper = [GLImagePickerHelper new];
-    self.helper.holeCropping = NO;
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    [super viewDidAppear:animated];
     [self.helper setup];
-}
-
-- (void)viewDidDisappear:(BOOL)animated
-{
-    [super viewDidDisappear:animated];
-    [self.helper cleanup];
 }
 
 - (IBAction)_didTouchButton:(id)sender
