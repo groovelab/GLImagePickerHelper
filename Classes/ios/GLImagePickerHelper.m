@@ -11,6 +11,9 @@
 #import "UIView+GLImagePickerHelper.h"
 #import "UIImage+GLImagePickerHelper.h"
 
+static const CGFloat kCropViewTopMarginGap = 10.;
+static const CGFloat kScrollViewTopMarginGap = 36.;
+
 @interface GLImagePickerHelper ()
 
 @property (nonatomic) UIViewController *cameraViewController;
@@ -98,7 +101,7 @@
         cropView = [viewController.view subviewWithClassName:@"PLCropOverlayCropView"];
         cropView.frame = (CGRect) {
             .origin.x = CGRectGetMinX(cropView.frame),
-            .origin.y = CGRectGetMinY(cropView.frame) + ((NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1) ? 10. : 0.),
+            .origin.y = CGRectGetMinY(cropView.frame) + ((NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1) ? kCropViewTopMarginGap : 0.),
             .size = cropView.frame.size
         };
     }
@@ -117,7 +120,7 @@
             if (isCamera && NSFoundationVersionNumber >= NSFoundationVersionNumber_iOS_7_0) {
                 scrollView.frame = (CGRect) {
                     .origin.x = CGRectGetMinX(scrollView.frame),
-                    .origin.y = CGRectGetMinY(scrollView.frame) - 36.,
+                    .origin.y = CGRectGetMinY(scrollView.frame) - kScrollViewTopMarginGap,
                     .size = scrollView.frame.size
                 };
             }
