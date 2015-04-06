@@ -10,19 +10,66 @@
 
 @implementation GLImagePickerHelper
 
-- (void)didFinishPickingMedia
+- (void)dealloc
+{
+    [self cleanup];
+}
+
+#pragma mark - Public Methods
+
+- (void)setup
+{
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(_didUIImagePickerControllerUserDidCaptureItem:)
+                                                 name:@"_UIImagePickerControllerUserDidCaptureItem"
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(_didUIImagePickerControllerUserDidRejectItem:)
+                                                 name:@"_UIImagePickerControllerUserDidRejectItem"
+                                               object:nil];
+}
+
+- (void)cleanup
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)willShowViewController:(UIViewController *)viewController
+{
+    NSString *className = NSStringFromClass([viewController class]);
+    
+    if ([className isEqualToString:@"PLUICameraViewController"]) {
+        self.cameraViewController = viewController;
+    } else if ([className isEqualToString:@"PUUIImageViewController"] ||
+               [className isEqualToString:@"PLUIImageViewController"]) {
+        UIView *cropView = [self _cropView:viewController];
+        [cropView addCircleHoleLayer];
+        [self _adjustZoomScaleInView:viewController.view isCamera:NO];
+    }
+}
+
+- (NSDictionary *)didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
     [self.fillLayer removeFromSuperlayer];
     self.cameraViewController = nil;
+    
+    UIImage *image = info[UIImagePickerControllerEditedImage];
+    if (image) {
+        NSMutableDictionary *mutableInfo = info.mutableCopy;
+        mutableInfo[UIImagePickerControllerEditedImage] = [image makeCornerRound:image.size.width / 2.];
+        info = mutableInfo;
+    }
+    return info;
 }
 
-- (UIView *)cropView:(UIViewController *)viewController
+#pragma mark - Private Methods
+
+- (UIView *)_cropView:(UIViewController *)viewController
 {
     UIView *cropView;
     NSString *className = NSStringFromClass([viewController class]);
     if ([className isEqualToString:@"PLUICameraViewController"]) {
         cropView = [viewController.view subviewWithClassName:@"PLCropOverlayCropView"];
-        [self _adjustZoomScaleInView:viewController.view isCamera:YES];
         
     } else if ([className isEqualToString:@"PUUIImageViewController"] ||
                [className isEqualToString:@"PLUIImageViewController"]) {
@@ -32,8 +79,6 @@
             .origin.y = CGRectGetMinY(cropView.frame) + ((NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1) ? 10. : 0.),
             .size = cropView.frame.size
         };
-        
-        [self _adjustZoomScaleInView:viewController.view isCamera:NO];
     }
     return cropView;
 }
@@ -56,6 +101,22 @@
             }
         }
     }
+}
+
+- (void)_didUIImagePickerControllerUserDidCaptureItem:(NSNotification *)notification
+{
+    if (!self.cameraViewController) {
+        return;
+    }
+    
+    UIView *cropView = [self _cropView:self.cameraViewController];
+    self.fillLayer = [cropView addCircleHoleLayer];
+    [self _adjustZoomScaleInView:self.cameraViewController.view isCamera:YES];
+}
+
+- (void)_didUIImagePickerControllerUserDidRejectItem:(NSNotification *)notification
+{
+    [self.fillLayer removeFromSuperlayer];
 }
 
 @end
@@ -118,6 +179,28 @@
         }
     }
     return nil;
+}
+
+@end
+
+@implementation UIImage (transform)
+
+- (UIImage *)makeCornerRound:(CGFloat)cornerRadius
+{
+    CALayer *imageLayer = [CALayer layer];
+    imageLayer.frame = (CGRect){
+        .origin = CGPointZero,
+        .size = self.size,
+    };
+    imageLayer.contents = (id)self.CGImage;
+    imageLayer.masksToBounds = YES;
+    imageLayer.cornerRadius = cornerRadius;
+    
+    UIGraphicsBeginImageContext(imageLayer.frame.size);
+    [imageLayer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *roundedImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    return roundedImage;
 }
 
 @end

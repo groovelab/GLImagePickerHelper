@@ -25,14 +25,18 @@
     [super viewDidLoad];
 
     self.helper = [GLImagePickerHelper new];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_didUIImagePickerControllerUserDidCaptureItem:) name:@"_UIImagePickerControllerUserDidCaptureItem" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(_didUIImagePickerControllerUserDidRejectItem:) name:@"_UIImagePickerControllerUserDidRejectItem" object:nil];
 }
 
-- (void)dealloc
+- (void)viewDidAppear:(BOOL)animated
 {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [super viewDidAppear:animated];
+    [self.helper setup];
+}
+
+- (void)viewDidDisappear:(BOOL)animated
+{
+    [super viewDidDisappear:animated];
+    [self.helper cleanup];
 }
 
 - (IBAction)_didTouchButton:(id)sender
@@ -138,7 +142,7 @@
 #pragma mark - UIImagePickerControllerDelegate
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    [self.helper didFinishPickingMedia];
+    info = [self.helper didFinishPickingMediaWithInfo:info];
     
     UIImage *image = info[UIImagePickerControllerEditedImage];
     CGRect rect = CGRectMake(0, 0, 250, 250);
@@ -146,7 +150,7 @@
     [image drawInRect:rect];
     UIImage *resizedImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         self.imageView.image = resizedImage;
         [picker dismissViewControllerAnimated:YES completion:nil];
@@ -157,31 +161,7 @@
 
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated {
     
-    NSString *className = NSStringFromClass([viewController class]);
-    
-    if ([className isEqualToString:@"PLUICameraViewController"]) {
-        self.helper.cameraViewController = viewController;
-    } else if ([className isEqualToString:@"PUUIImageViewController"] ||
-               [className isEqualToString:@"PLUIImageViewController"]) {
-        
-        UIView *cropView = [self.helper cropView:viewController];
-        [cropView addCircleHoleLayer];
-    }
-}
-
-- (void)_didUIImagePickerControllerUserDidCaptureItem:(NSNotification *)notification
-{
-    if (!self.helper.cameraViewController) {
-        return;
-    }
-    
-    UIView *cropView = [self.helper cropView:self.helper.cameraViewController];
-    self.helper.fillLayer = [cropView addCircleHoleLayer];
-}
-
-- (void)_didUIImagePickerControllerUserDidRejectItem:(NSNotification *)notification
-{
-    [self.helper.fillLayer removeFromSuperlayer];
+    [self.helper willShowViewController:viewController];
 }
 
 @end

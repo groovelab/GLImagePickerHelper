@@ -13,8 +13,10 @@
 @property (nonatomic) UIViewController *cameraViewController;
 @property (nonatomic) CALayer *fillLayer;
 
-- (void)didFinishPickingMedia;
-- (UIView *)cropView:(UIViewController *)viewController;
+- (void)setup;
+- (void)cleanup;
+- (NSDictionary *)didFinishPickingMediaWithInfo:(NSDictionary *)info;
+- (void)willShowViewController:(UIViewController *)viewController;
 
 @end
 
@@ -33,3 +35,8 @@
 
 @end
 
+@interface UIImage (transform)
+
+- (UIImage *)makeCornerRound:(CGFloat)cornerRadius;
+
+@end
