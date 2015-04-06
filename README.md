@@ -1,4 +1,4 @@
-# GLImagePickerHelper
+GLImagePickerHelper
 ==================
 
 GLImagePickerHelper is helper of UIImagePickerController.
