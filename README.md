@@ -2,6 +2,7 @@ GLImagePickerHelper
 ==================
 
 GLImagePickerHelper is helper of UIImagePickerController.
+
 If allowsEditing property of UIImagePickerController is YES, zoom scale of crop view is not correct with landscape image.
 
 ![not correct zoom scale](https://raw.github.com/groovelab/GLImagePickerHelper/master/SampleImages/not_correct_zoom.png)
