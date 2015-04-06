@@ -10,8 +10,7 @@
 
 @interface GLImagePickerHelper : NSObject
 
-@property (nonatomic) UIViewController *cameraViewController;
-@property (nonatomic) CALayer *fillLayer;
+@property (nonatomic) BOOL holeCropping;    //  default is YES
 
 - (void)setup;
 - (void)cleanup;

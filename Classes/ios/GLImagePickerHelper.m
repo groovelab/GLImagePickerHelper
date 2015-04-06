@@ -8,7 +8,23 @@
 
 #import "GLImagePickerHelper.h"
 
+@interface GLImagePickerHelper ()
+
+@property (nonatomic) UIViewController *cameraViewController;
+@property (nonatomic) CALayer *fillLayer;
+
+@end
+
 @implementation GLImagePickerHelper
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.holeCropping = YES;
+    }
+    return self;
+}
 
 - (void)dealloc
 {
@@ -42,8 +58,10 @@
         self.cameraViewController = viewController;
     } else if ([className isEqualToString:@"PUUIImageViewController"] ||
                [className isEqualToString:@"PLUIImageViewController"]) {
-        UIView *cropView = [self _cropView:viewController];
-        [cropView addCircleHoleLayer];
+        if (self.holeCropping) {
+            UIView *cropView = [self _cropView:viewController];
+            [cropView addCircleHoleLayer];
+        }
         [self _adjustZoomScaleInView:viewController.view isCamera:NO];
     }
 }
@@ -53,11 +71,13 @@
     [self.fillLayer removeFromSuperlayer];
     self.cameraViewController = nil;
     
-    UIImage *image = info[UIImagePickerControllerEditedImage];
-    if (image) {
-        NSMutableDictionary *mutableInfo = info.mutableCopy;
-        mutableInfo[UIImagePickerControllerEditedImage] = [image makeCornerRound:image.size.width / 2.];
-        info = mutableInfo;
+    if (self.holeCropping) {
+        UIImage *image = info[UIImagePickerControllerEditedImage];
+        if (image) {
+            NSMutableDictionary *mutableInfo = info.mutableCopy;
+            mutableInfo[UIImagePickerControllerEditedImage] = [image makeCornerRound:image.size.width / 2.];
+            info = mutableInfo;
+        }
     }
     return info;
 }
@@ -109,8 +129,10 @@
         return;
     }
     
-    UIView *cropView = [self _cropView:self.cameraViewController];
-    self.fillLayer = [cropView addCircleHoleLayer];
+    if (self.holeCropping) {
+        UIView *cropView = [self _cropView:self.cameraViewController];
+        self.fillLayer = [cropView addCircleHoleLayer];
+    }
     [self _adjustZoomScaleInView:self.cameraViewController.view isCamera:YES];
 }
 

@@ -25,6 +25,7 @@
     [super viewDidLoad];
 
     self.helper = [GLImagePickerHelper new];
+    self.helper.holeCropping = NO;
 }
 
 - (void)viewDidAppear:(BOOL)animated
