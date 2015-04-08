@@ -56,6 +56,12 @@ static const CGFloat kScrollViewTopMarginGap = 36.;
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
+- (void)viewWillAppear
+{
+    [self.fillLayer removeFromSuperlayer];
+    self.cameraViewController = nil;
+}
+
 - (void)willShowViewController:(UIViewController *)viewController
 {
     NSString *className = NSStringFromClass([viewController class]);
@@ -74,9 +80,6 @@ static const CGFloat kScrollViewTopMarginGap = 36.;
 
 - (NSDictionary *)didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    [self.fillLayer removeFromSuperlayer];
-    self.cameraViewController = nil;
-    
     if (self.holeCropping) {
         UIImage *image = info[UIImagePickerControllerEditedImage];
         if (image) {

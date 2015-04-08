@@ -29,6 +29,13 @@
     [self.helper setup];
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.helper viewWillAppear];
+}
+
 - (IBAction)_didTouchButton:(id)sender
 {
     self.helper.holeCropping = NO;
