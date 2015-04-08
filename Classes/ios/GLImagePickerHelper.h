@@ -14,6 +14,7 @@
 
 - (void)setup;
 - (void)cleanup;
+- (void)viewWillAppear;
 - (NSDictionary *)didFinishPickingMediaWithInfo:(NSDictionary *)info;
 - (void)willShowViewController:(UIViewController *)viewController;
 
