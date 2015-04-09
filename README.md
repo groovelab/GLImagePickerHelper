@@ -90,6 +90,12 @@ Example
     //  self.helper.holeCropping = NO;  //  if you don't use hole cropping
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.helper viewWillAppear];
+}
+
 - (void)showImagePickerControllerSourceTypeCamera
 {
     if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
